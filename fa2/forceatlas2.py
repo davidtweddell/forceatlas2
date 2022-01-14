@@ -270,13 +270,17 @@ class ForceAtlas2:
 
         return dict(zip(G.nodes(), l))
 
-    # A layout for igraph.
+     #  A layout for igraph.
     #
     # This function returns an igraph layout
-    def forceatlas2_igraph_layout(self, G, pos=None, iterations=100, weight_attr=None):
+    def forceatlas2_igraph_layout(self, G, pos=None, iterations=100, weight_attr=None, size_attr = None):
 
         from scipy.sparse import csr_matrix
         import igraph
+
+        print("using size_attr:   {0}".format(size_attr))
+        print("using weight_attr: {0}".format(weight_attr))
+        print("adjust size:       {0}".format(self.adjustSizes))
 
         def to_sparse(graph, weight_attr=None):
             edges = graph.get_edgelist()
@@ -291,13 +295,22 @@ class ForceAtlas2:
 
             return csr_matrix((weights, zip(*edges)))
 
-        assert isinstance(G, igraph.Graph), "Not a igraph graph"
+        assert isinstance(G, igraph.Graph), "Not an igraph graph"
         assert isinstance(pos, (list, numpy.ndarray)) or (pos is None), "pos must be a list or numpy array"
+        if self.adjustSizes:
+            assert isinstance(size_attr, str), "adjustSizes=True requires the name of a size attribute to be passed"
+
+        adj = to_sparse(G, weight_attr)
 
         if isinstance(pos, list):
             pos = numpy.array(pos)
 
-        adj = to_sparse(G, weight_attr)
-        coords = self.forceatlas2(adj, pos=pos, iterations=iterations)
+        if size_attr:
+            sizelist = numpy.asarray([s for s in G.vs[size_attr]])
+        else:
+            sizelist = None
+
+
+        coords = self.forceatlas2(adj, pos=pos, sizes = sizelist, iterations=iterations)
 
         return igraph.layout.Layout(coords, 2)
