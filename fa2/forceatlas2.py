@@ -49,7 +49,7 @@ class ForceAtlas2:
                  # Behavior alternatives
                  outboundAttractionDistribution=False,  # Dissuade hubs
                  linLogMode=False,  # NOT IMPLEMENTED
-                 adjustSizes=False,  # Prevent overlap (NOT IMPLEMENTED)
+                 adjustSizes=False,  # Prevent overlap
                  edgeWeightInfluence=1.0,
 
                  # Performance
