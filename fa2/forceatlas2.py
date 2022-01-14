@@ -278,9 +278,9 @@ class ForceAtlas2:
         from scipy.sparse import csr_matrix
         import igraph
 
-        print("using size_attr:   {0}".format(size_attr))
-        print("using weight_attr: {0}".format(weight_attr))
-        print("adjust size:       {0}".format(self.adjustSizes))
+        # print("using size_attr:   {0}".format(size_attr))
+        # print("using weight_attr: {0}".format(weight_attr))
+        # print("adjust size:       {0}".format(self.adjustSizes))
 
         def to_sparse(graph, weight_attr=None):
             edges = graph.get_edgelist()
